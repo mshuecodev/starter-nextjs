@@ -1,6 +1,6 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
 // https://nextjs.org/learn/dashboard-app/fetching-data
-import { formatter } from "@/app/lib/formatter"
+import { formatDateToLocal, formatCurrency } from "@/app/lib/utils"
 
 const users = [
 	{
@@ -147,17 +147,18 @@ const revenue = [
 ]
 
 const latestInvoices = customers.map((customer) => {
+	const finvoice = invoices.find((invoice) => invoice.customer_id === customer.id)
 	return {
 		...customer,
-		invoices: invoices.filter((invoice) => invoice.customer_id === customer.id)
+		...finvoice
 	}
 })
 
 const paidInvoice = invoices.filter((x) => x?.status === "paid").map((y) => y?.amount)
-const totalPaidInvoices = formatter.format(paidInvoice.reduce((partialSum, a) => partialSum + a, 0))
+const totalPaidInvoices = formatCurrency(paidInvoice.reduce((partialSum, a) => partialSum + a, 0))
 
 const pendingInvoice = invoices.filter((x) => x?.status === "pending").map((y) => y?.amount)
-const totalPendingInvoices = formatter.format(pendingInvoice.reduce((partialSum, a) => partialSum + a, 0))
+const totalPendingInvoices = formatCurrency(pendingInvoice.reduce((partialSum, a) => partialSum + a, 0))
 
 const numberOfInvoices = invoices?.length
 const numberOfCustomers = customers?.length

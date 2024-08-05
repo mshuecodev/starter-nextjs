@@ -2,6 +2,8 @@ import { ArrowPathIcon } from "@heroicons/react/24/outline"
 import clsx from "clsx"
 import Image from "next/image"
 // import { lusitana } from '@/app/ui/fonts';
+import { formatCurrency } from "@/app/lib/utils"
+
 import { LatestInvoice } from "@/app/lib/definitions"
 export default async function LatestInvoices({ latestInvoices }: { latestInvoices: LatestInvoice[] }) {
 	return (
@@ -32,7 +34,7 @@ export default async function LatestInvoices({ latestInvoices }: { latestInvoice
 										<p className="hidden text-sm text-gray-500 sm:block">{invoice.email}</p>
 									</div>
 								</div>
-								<p className={` truncate text-sm font-medium md:text-base`}>{invoice.amount}</p>
+								<p className={` truncate text-sm font-medium md:text-base`}>{formatCurrency(invoice.amount)}</p>
 							</div>
 						)
 					})}
