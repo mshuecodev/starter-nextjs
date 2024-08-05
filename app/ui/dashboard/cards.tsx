@@ -17,7 +17,7 @@ export default async function CardWrapper() {
 				value={totalPaidInvoices}
 				type="collected"
 			/>
-			{/* <Card
+			<Card
 				title="Pending"
 				value={totalPendingInvoices}
 				type="pending"
@@ -31,7 +31,7 @@ export default async function CardWrapper() {
 				title="Total Customers"
 				value={numberOfCustomers}
 				type="customers"
-			/> */}
+			/>
 		</>
 	)
 }
