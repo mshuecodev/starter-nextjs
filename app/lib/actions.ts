@@ -3,6 +3,7 @@ import { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { signIn } from "@/auth"
+// import { signIn } from "next-auth/react"
 import { AuthError } from "next-auth"
 
 const FormSchema = z.object({
@@ -86,16 +87,24 @@ export async function deleteInvoice(id: string) {
 // AUTHENTICATION
 export async function authenticate(prevState: string | undefined, formData: FormData) {
 	try {
-		await signIn("credentials", formData)
-	} catch (error) {
-		if (error instanceof AuthError) {
-			switch (error.type) {
+		const result = await signIn("credentials", {
+			redirect: false,
+			email: formData.get("email"),
+			password: formData.get("password")
+		})
+
+		if (result?.error) {
+			switch (result.error) {
 				case "CredentialsSignin":
-					return "Invalid credentials."
+					return { message: "Invalid credentials." }
 				default:
-					return "Something went wrong."
+					return { message: "Something went wrong." }
 			}
 		}
-		throw error
+
+		redirect("/dashboard")
+	} catch (error) {
+		console.error("Authentication error:", error)
+		return { message: "Something went wrong." }
 	}
 }
